@@ -1744,6 +1744,11 @@ textarea:focus {
   .case-card img {
     max-height: 260px;
   }
+
+  .case-study img {
+    min-height: 0;
+    max-height: 320px;
+  }
 }
 
 @media (max-width: 680px) {
