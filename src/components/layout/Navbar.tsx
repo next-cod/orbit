@@ -53,7 +53,7 @@ export function Navbar() {
           <Link
             href="/apply"
             onClick={() => setOpen(false)}
-            style={{ background: 'var(--color-night-sky)', color: '#fff', border: '1px solid var(--color-rich-black)' }}
+            style={{ background: 'var(--gradient-aurora)', color: '#fff', border: '1px solid transparent', fontFamily: 'var(--font-display)', fontWeight: 600 }}
           >
             Оставить заявку
           </Link>

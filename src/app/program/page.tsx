@@ -45,7 +45,7 @@ export default function ProgramPage() {
 
         <aside className="sticky-panel">
           <span className="eyebrow">Ритм участия</span>
-          <h2 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: '22px', letterSpacing: '-0.02em', color: '#fff', marginTop: '12px' }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '22px', letterSpacing: '-0.01em', color: '#fff', marginTop: '12px' }}>
             Без перегруза, но с жесткой структурой результата.
           </h2>
           <p>Каждую неделю вы закрываете один конкретный артефакт: карту сегмента, оффер, модуль, лендинг, скрипт, календарь запуска.</p>

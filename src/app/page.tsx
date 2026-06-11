@@ -10,7 +10,6 @@ export default function HomePage() {
     <>
       <section className="hero-section">
         <div className="hero-stars" />
-        <div className="hero-bg-grid" />
         <div className="hero-content">
           <motion.span className="eyebrow hero-eyebrow" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
             {product.eyebrow}
@@ -20,7 +19,12 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ delay: 0.18, duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
           >
-            {product.headline}
+            {product.headline.split(product.headlineAccent).map((part, index, arr) => (
+              <span key={part}>
+                {part}
+                {index < arr.length - 1 && <em>{product.headlineAccent}</em>}
+              </span>
+            ))}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 18, filter: 'blur(6px)' }}
@@ -205,7 +209,7 @@ export default function HomePage() {
       </section>
 
       <section className="cta-section">
-        <ShieldCheck size={26} color="#41a1cf" />
+        <ShieldCheck size={26} color="#22d3ee" />
         <h2>Заявка занимает 3 минуты. После нее вы увидите, какой формат участия подходит.</h2>
         <p>Никакой автосписания и настоящей оплаты в демо нет. Это качественный фронтенд-прототип заявочной воронки.</p>
         <Link className="button ghost" href="/apply" style={{ marginTop: '24px', display: 'inline-flex', width: 'auto' }}>
