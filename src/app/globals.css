@@ -974,7 +974,14 @@ h1, h2, h3 {
   gap: 8px;
   align-items: flex-start;
   font-size: 14px;
+}
+
+.price-card li {
   color: rgba(255, 255, 255, 0.8);
+}
+
+.module-card li {
+  color: var(--color-slate-gray);
 }
 
 .price-card li svg {
