@@ -46,7 +46,7 @@ export function Footer() {
             <Link href="/offer">Оферта</Link>
             <Link href="/license">Лицензия</Link>
             <button type="button" className="footer-disclaimer-toggle" onClick={toggle} aria-expanded={open}>
-              {disclaimer.lead}
+              Дисклеймер
             </button>
             <span className="copy">© {new Date().getFullYear()} {product.name}</span>
           </div>
@@ -54,7 +54,9 @@ export function Footer() {
 
         <div className="footer-disclaimer-body" style={{ maxHeight: open ? height : 0 }}>
           <div ref={bodyRef}>
-            <p>{disclaimer.text}</p>
+            <p>
+              <strong>{disclaimer.lead}</strong> {disclaimer.text}
+            </p>
           </div>
         </div>
       </div>
