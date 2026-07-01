@@ -1,68 +1,48 @@
-﻿import { Check, HelpCircle } from 'lucide-react'
 import Link from 'next/link'
-import { PageHeader } from '@/components/ui/PageHeader'
-import { Reveal } from '@/components/ui/Reveal'
-import { pricingTiers } from '@/data/content'
+import { Arrow } from '@/components/ui/icons'
+import { PriceCard } from '@/components/ui/PriceCard'
+import { tariffs } from '@/data/content'
 
 export const metadata = {
-  title: 'Тарифы — Orbit Method',
-  description: 'Выберите глубину сопровождения под зрелость продукта и аудитории.',
+  title: 'Тарифы – Orbit Method',
+  description: 'Один маршрут, три уровня поддержки: от самостоятельной сборки до личного launch-room.',
 }
 
 export default function PricingPage() {
   return (
-    <>
-      <PageHeader
-        eyebrow="Тарифы"
-        title="Выберите глубину сопровождения под зрелость продукта и аудитории."
-        text="Все тарифы дают готовую структуру продукта и запуска. Разница в количестве личного сопровождения, ревью и операционной помощи."
-      />
+    <div className="page-in">
+      <section className="page-head tight">
+        <div className="wrap-narrow" style={{ textAlign: 'center' }}>
+          <h1 style={{ marginInline: 'auto' }}>Выберите формат запуска</h1>
+          <p style={{ marginInline: 'auto' }}>
+            Один маршрут, три уровня поддержки. От самостоятельной сборки до личного launch-room с
+            командой кураторов.
+          </p>
+        </div>
+      </section>
 
-      <section className="section pricing-page-grid">
-        {pricingTiers.map((tier, idx) => (
-          <Reveal className={`price-card large ${tier.accent}`} key={tier.name} delay={idx * 0.08} y={20}>
-            <div className="price-topline">
-              <span>{tier.bestFor}</span>
+      <section className="sec-white" style={{ padding: 'clamp(40px,5vw,64px) 0 clamp(72px,9vw,110px)' }}>
+        <div className="wrap">
+          <div className="pricing-grid">
+            {tariffs.map((t, i) => (
+              <PriceCard tier={t} delay={i * 80} key={t.id} />
+            ))}
+          </div>
+
+          <div className="reveal cta-row" style={{ marginTop: 'clamp(48px,6vw,76px)' }}>
+            <div className="copy">
+              <h2>Не уверены, какой формат подойдёт?</h2>
+              <p>
+                Заполните заявку – форма подберёт тариф под вашу нишу и цель, а куратор подтвердит на
+                коротком созвоне.
+              </p>
             </div>
-            <h2>{tier.name}</h2>
-            <strong>{tier.price}</strong>
-            <p>{tier.note}</p>
-            <ul>
-              {tier.features.map((feature) => (
-                <li key={feature}>
-                  <Check size={14} />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-            <Link className="button outlined full" href={`/apply?tier=${tier.name.toLowerCase()}`}>
-              Оставить заявку на {tier.name}
+            <Link className="btn btn-primary" href="/apply">
+              Подобрать тариф <Arrow />
             </Link>
-          </Reveal>
-        ))}
-      </section>
-
-      <section className="section compare-section">
-        <div className="section-heading compact">
-          <span className="eyebrow">Как выбрать</span>
-          <h2>Если сомневаетесь, форма заявки подскажет рекомендуемый формат.</h2>
-        </div>
-        <div className="compare-grid">
-          {[
-            { name: 'Core', text: 'Подходит, если у вас есть время самому писать, собирать лендинг и делать первые продажи.' },
-            { name: 'Studio', text: 'Лучший баланс: вы делаете продукт, а мы проверяем ключевые решения до запуска.' },
-            { name: 'Partner', text: 'Для запуска с высокой ставкой, где важны стратегия, скорость и контроль деталей.' },
-          ].map((item, idx) => (
-            <Reveal key={item.name} delay={idx * 0.08}>
-              <div>
-                <HelpCircle size={20} color="var(--color-cofounder-blue)" />
-                <h3>{item.name}</h3>
-                <p>{item.text}</p>
-              </div>
-            </Reveal>
-          ))}
+          </div>
         </div>
       </section>
-    </>
+    </div>
   )
 }

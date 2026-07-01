@@ -1,151 +1,257 @@
-﻿'use client'
-import { CheckCircle2, Loader2, Send } from 'lucide-react'
+'use client'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { pricingTiers } from '@/data/content'
+import { Arrow } from '@/components/ui/icons'
+import { audienceOptions, tariffs } from '@/data/content'
 
 type FormState = {
   name: string
   email: string
   telegram: string
-  niche: string
   audience: string
-  tier: string
+  niche: string
+  tariff: string
   goal: string
-  budget: boolean
+  consent: boolean
 }
 
-const initialState: FormState = {
+const emptyForm: FormState = {
   name: '',
   email: '',
   telegram: '',
+  audience: '',
   niche: '',
-  audience: 'До 1 000',
-  tier: 'Studio',
+  tariff: '',
   goal: '',
-  budget: false,
+  consent: false,
 }
 
 export function ApplyForm() {
   const params = useSearchParams()
-  const selectedTier = params.get('tier')
-  const defaultTier = useMemo(() => {
-    const found = pricingTiers.find((t) => t.name.toLowerCase() === selectedTier)
-    return found?.name ?? initialState.tier
-  }, [selectedTier])
+  const presetTier = useMemo(() => {
+    const t = params.get('tier')
+    return tariffs.find((x) => x.id === t)?.id ?? ''
+  }, [params])
 
-  const [form, setForm] = useState<FormState>({ ...initialState, tier: defaultTier })
+  const [form, setForm] = useState<FormState>({ ...emptyForm, tariff: presetTier })
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({})
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle')
+  const [submitted, setSubmitted] = useState(false)
+  const [audienceOpen, setAudienceOpen] = useState(false)
 
-  const update = (key: keyof FormState, value: string | boolean) => {
+  const setField = (key: keyof FormState, value: string | boolean) => {
     setForm((c) => ({ ...c, [key]: value }))
-    setErrors((c) => ({ ...c, [key]: undefined }))
+    setErrors((c) => ({ ...c, [key]: '' }))
   }
 
   const validate = () => {
     const e: Partial<Record<keyof FormState, string>> = {}
-    if (form.name.trim().length < 2) e.name = 'Укажите имя, чтобы мы понимали, как к вам обращаться.'
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Введите рабочий email.'
-    if (form.niche.trim().length < 8) e.niche = 'Коротко опишите нишу и вашу экспертизу.'
-    if (form.goal.trim().length < 20) e.goal = 'Напишите, какой продукт хотите запустить и какой результат важен.'
-    if (!form.budget) e.budget = 'Подтвердите, что понимаете формат заявки без оплаты.'
+    if (!form.name.trim()) e.name = 'Укажите имя'
+    if (!form.email.trim()) e.email = 'Укажите email'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) e.email = 'Проверьте формат email'
+    if (!form.audience) e.audience = 'Выберите размер аудитории'
+    if (!form.niche.trim()) e.niche = 'Опишите нишу и экспертизу'
+    if (!form.tariff) e.tariff = 'Выберите тариф'
+    if (!form.consent) e.consent = 'Нужно согласие на обработку данных'
     return e
   }
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const nextErrors = validate()
-    setErrors(nextErrors)
-    if (Object.keys(nextErrors).length > 0) return
-    setStatus('loading')
-    window.setTimeout(() => setStatus('success'), 800)
+    const e = validate()
+    if (Object.keys(e).length) {
+      setErrors(e)
+      return
+    }
+    setErrors({})
+    setSubmitted(true)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const reset = () => {
+    setSubmitted(false)
+    setForm({ ...emptyForm })
+    setErrors({})
+  }
+
+  if (submitted) {
+    return (
+      <div className="apply-success" role="status">
+        <span className="ok">
+          <Image src="/check-purple.png" alt="" width={32} height={32} />
+        </span>
+        <h2>Заявка отправлена</h2>
+        <p>
+          Спасибо! Форма подобрала формат под вашу задачу. Дальше куратор посмотрит заявку и предложит
+          короткий созвон – обычно отвечаем в течение одного рабочего дня.
+        </p>
+        <div className="actions">
+          <Link className="btn btn-primary" href="/">
+            На главную
+          </Link>
+          <button type="button" className="btn-soft" onClick={reset}>
+            Отправить ещё одну
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (
     <form className="apply-form" onSubmit={submit} noValidate>
-      {status === 'success' ? (
-        <div className="success-state" role="status">
-          <CheckCircle2 size={40} />
-          <h2>Заявка собрана</h2>
-          <p>В демо данные никуда не отправлены. В реальной версии здесь будет подтверждение, письмо и запись в CRM.</p>
-          <button type="button" className="button primary" onClick={() => setStatus('idle')}>
-            Заполнить заново
-          </button>
+      <div className="field-pair">
+        <div className="field">
+          <label htmlFor="f-name">Имя</label>
+          <input
+            id="f-name"
+            className={`inp${errors.name ? ' err' : ''}`}
+            value={form.name}
+            onChange={(e) => setField('name', e.target.value)}
+            placeholder="Как к вам обращаться"
+          />
+          {errors.name && <div className="err-msg">{errors.name}</div>}
         </div>
-      ) : (
-        <>
-          <div className="form-row two">
-            <label>
-              Имя
-              <input value={form.name} onChange={(e) => update('name', e.target.value)} placeholder="Например, Дима" />
-              {errors.name && <span className="field-error">{errors.name}</span>}
-            </label>
-            <label>
-              Email
-              <input type="email" value={form.email} onChange={(e) => update('email', e.target.value)} placeholder="name@company.ru" />
-              {errors.email && <span className="field-error">{errors.email}</span>}
-            </label>
+        <div className="field">
+          <label htmlFor="f-email">Email</label>
+          <input
+            id="f-email"
+            className={`inp${errors.email ? ' err' : ''}`}
+            value={form.email}
+            onChange={(e) => setField('email', e.target.value)}
+            placeholder="you@example.com"
+          />
+          {errors.email && <div className="err-msg">{errors.email}</div>}
+        </div>
+      </div>
+
+      <div className="field-pair">
+        <div className="field">
+          <label htmlFor="f-tg">
+            Telegram <span className="opt">– необязательно</span>
+          </label>
+          <input
+            id="f-tg"
+            className="inp"
+            value={form.telegram}
+            onChange={(e) => setField('telegram', e.target.value)}
+            placeholder="@username"
+          />
+        </div>
+        <div className="field">
+          <span className="lab">Размер аудитории</span>
+          <div className="select-wrap">
+            <button
+              type="button"
+              className={`select-trigger${audienceOpen ? ' open' : ''}${errors.audience ? ' err' : ''}`}
+              onClick={() => setAudienceOpen((v) => !v)}
+              aria-haspopup="listbox"
+              aria-expanded={audienceOpen}
+            >
+              <span className={`val${form.audience ? '' : ' placeholder'}`}>
+                {form.audience || 'Выберите…'}
+              </span>
+              <svg className="chev" width="13" height="8" viewBox="0 0 13 8" fill="none">
+                <path
+                  d="M1.5 1.75 6.5 6.25 11.5 1.75"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            {audienceOpen && (
+              <>
+                <div className="select-scrim" onClick={() => setAudienceOpen(false)} />
+                <div className="select-panel" role="listbox">
+                  {audienceOptions.map((opt) => (
+                    <button
+                      type="button"
+                      key={opt}
+                      role="option"
+                      aria-selected={form.audience === opt}
+                      className={`select-opt${form.audience === opt ? ' sel' : ''}`}
+                      onClick={() => {
+                        setField('audience', opt)
+                        setAudienceOpen(false)
+                      }}
+                    >
+                      <span>{opt}</span>
+                      {form.audience === opt && (
+                        <Image src="/check-purple.png" alt="" width={14} height={14} />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
+          {errors.audience && <div className="err-msg">{errors.audience}</div>}
+        </div>
+      </div>
 
-          <div className="form-row two">
-            <label>
-              Telegram
-              <input value={form.telegram} onChange={(e) => update('telegram', e.target.value)} placeholder="@username" />
-            </label>
-            <label>
-              Размер аудитории
-              <select value={form.audience} onChange={(e) => update('audience', e.target.value)}>
-                <option>До 1 000</option>
-                <option>1 000 - 5 000</option>
-                <option>5 000 - 20 000</option>
-                <option>20 000+</option>
-              </select>
-            </label>
-          </div>
+      <div className="field">
+        <label htmlFor="f-niche">Ниша и экспертиза</label>
+        <input
+          id="f-niche"
+          className={`inp${errors.niche ? ' err' : ''}`}
+          value={form.niche}
+          onChange={(e) => setField('niche', e.target.value)}
+          placeholder="Например: B2B-продажи, корпоративное обучение, дизайн"
+        />
+        {errors.niche && <div className="err-msg">{errors.niche}</div>}
+      </div>
 
-          <label>
-            Ниша и экспертиза
-            <input value={form.niche} onChange={(e) => update('niche', e.target.value)} placeholder="Например: HR-консалтинг для IT-команд" />
-            {errors.niche && <span className="field-error">{errors.niche}</span>}
-          </label>
+      <div className="field">
+        <span className="lab">Какой тариф интересен</span>
+        <div className="tariff-pick">
+          {tariffs.map((t) => (
+            <button
+              type="button"
+              key={t.id}
+              className={`tariff-opt${form.tariff === t.id ? ' sel' : ''}`}
+              onClick={() => setField('tariff', t.id)}
+            >
+              <div className="t-name">{t.name}</div>
+              <div className="t-price">{t.price}</div>
+            </button>
+          ))}
+        </div>
+        {errors.tariff && <div className="err-msg" style={{ marginTop: 8 }}>{errors.tariff}</div>}
+      </div>
 
-          <label>
-            Предпочтительный тариф
-            <div className="segmented-control" role="radiogroup" aria-label="Выбор тарифа">
-              {pricingTiers.map((tier) => (
-                <button
-                  key={tier.name}
-                  type="button"
-                  className={form.tier === tier.name ? 'selected' : ''}
-                  onClick={() => update('tier', tier.name)}
-                  aria-pressed={form.tier === tier.name}
-                >
-                  {tier.name}
-                </button>
-              ))}
-            </div>
-          </label>
+      <div className="field">
+        <label htmlFor="f-goal">
+          Что хотите запустить <span className="opt">– необязательно</span>
+        </label>
+        <textarea
+          id="f-goal"
+          className="inp"
+          rows={3}
+          value={form.goal}
+          onChange={(e) => setField('goal', e.target.value)}
+          placeholder="Пара предложений о продукте и цели запуска"
+        />
+      </div>
 
-          <label>
-            Что хотите запустить
-            <textarea value={form.goal} onChange={(e) => update('goal', e.target.value)} placeholder="Опишите идею продукта, желаемый результат, дедлайн и что уже есть." rows={6} />
-            {errors.goal && <span className="field-error">{errors.goal}</span>}
-          </label>
+      <label className="consent">
+        <input
+          type="checkbox"
+          checked={form.consent}
+          onChange={(e) => setField('consent', e.target.checked)}
+        />
+        <span>Согласен на обработку персональных данных и получение ответа по заявке.</span>
+      </label>
+      {errors.consent && <div className="err-msg" style={{ marginTop: -10 }}>{errors.consent}</div>}
 
-          <label className="checkbox-line">
-            <input type="checkbox" checked={form.budget} onChange={(e) => update('budget', e.target.checked)} />
-            <span>Я понимаю, что это заявка на обучение, а не мгновенная оплата. Финальные условия обсуждаются после отбора.</span>
-          </label>
-          {errors.budget && <span className="field-error">{errors.budget}</span>}
-
-          <button className="button primary submit-button" type="submit" disabled={status === 'loading'}>
-            {status === 'loading' ? <Loader2 className="spin" size={16} /> : <Send size={16} />}
-            Отправить заявку
-          </button>
-        </>
-      )}
+      <div>
+        <button type="submit" className="submit-btn">
+          Отправить заявку <Arrow />
+        </button>
+        <p className="submit-note">Ответим в течение одного рабочего дня</p>
+      </div>
     </form>
   )
 }

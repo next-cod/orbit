@@ -1,17 +1,9 @@
-﻿import type { Metadata } from 'next'
-import { Manrope, Unbounded } from 'next/font/google'
+import type { Metadata } from 'next'
+import { Manrope } from 'next/font/google'
 import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
-import { LenisProvider } from '@/components/layout/LenisProvider'
-import { PageTransition } from '@/components/layout/PageTransition'
-
-const unbounded = Unbounded({
-  subsets: ['cyrillic', 'cyrillic-ext', 'latin', 'latin-ext'],
-  weight: ['500', '600', '700', '800', '900'],
-  variable: '--font-unbounded',
-  display: 'swap',
-})
+import { ScrollFX } from '@/components/layout/ScrollFX'
 
 const manrope = Manrope({
   subsets: ['cyrillic', 'cyrillic-ext', 'latin', 'latin-ext'],
@@ -21,24 +13,22 @@ const manrope = Manrope({
 })
 
 export const metadata: Metadata = {
-  title: 'Orbit Method — 8-недельная программа для экспертов',
-  description: 'Соберите инфопродукт, который выглядит как сильный бренд, а продается как система.',
+  title: 'Orbit Method – упакуйте экспертность в продукт',
+  description:
+    'За 8 недель собираем оффер, программу, лендинг, тарифы и заявку для первого понятного запуска.',
   icons: { icon: '/favicon.svg' },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru" className={`${unbounded.variable} ${manrope.variable}`} data-scroll-behavior="smooth">
+    <html lang="ru" className={manrope.variable} data-scroll-behavior="smooth">
       <body>
-        <LenisProvider>
-          <div className="site-shell">
-            <Navbar />
-            <PageTransition>
-              <main>{children}</main>
-            </PageTransition>
-            <Footer />
-          </div>
-        </LenisProvider>
+        <div className="site-shell">
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </div>
+        <ScrollFX />
       </body>
     </html>
   )

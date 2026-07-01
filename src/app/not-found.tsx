@@ -1,13 +1,13 @@
-﻿import Link from 'next/link'
+import Link from 'next/link'
+import { Arrow } from '@/components/ui/icons'
 
 export default function NotFound() {
   return (
     <section className="not-found">
-      <span className="eyebrow">404</span>
-      <h1>Такой страницы нет.</h1>
-      <p>Вернитесь на главную или откройте заявку на участие в Orbit Method.</p>
-      <Link className="button primary" href="/">
-        На главную
+      <h1>404</h1>
+      <p>Такой страницы нет. Вернитесь на главную или откройте заявку на участие в Orbit Method.</p>
+      <Link className="btn btn-primary" href="/">
+        На главную <Arrow />
       </Link>
     </section>
   )

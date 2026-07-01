@@ -1,222 +1,191 @@
-﻿'use client'
-import { motion } from 'framer-motion'
-import { ArrowRight, Check, ChevronRight, ShieldCheck, Sparkles } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
-import { Reveal } from '@/components/ui/Reveal'
-import { caseStudies, faq, features, galleryImages, pricingTiers, product, schedule, stats, trustSignals } from '@/data/content'
+import { Arrow } from '@/components/ui/icons'
+import { Faq } from '@/components/ui/Faq'
+import { PriceCard } from '@/components/ui/PriceCard'
+import { cases, methodStages, product, routeSteps, systemPoints, tariffs } from '@/data/content'
 
 export default function HomePage() {
   return (
-    <>
-      <section className="hero-section">
-        <div className="hero-stars" />
-        <div className="hero-content">
-          <motion.span className="eyebrow hero-eyebrow" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-            {product.eyebrow}
-          </motion.span>
-          <motion.h1
-            initial={{ opacity: 0, y: 26, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ delay: 0.18, duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {product.headline.split(product.headlineAccent).map((part, index, arr) => (
-              <span key={part}>
-                {part}
-                {index < arr.length - 1 && <em>{product.headlineAccent}</em>}
-              </span>
-            ))}
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 18, filter: 'blur(6px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ delay: 0.5, duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {product.description}
-          </motion.p>
-          <motion.div
-            className="hero-actions"
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.62, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <Link className="button primary" href="/apply">
-              Оставить заявку
-              <ArrowRight size={16} />
+    <div className="page-in">
+      {/* Hero */}
+      <section className="hero">
+        <div className="hero-orb a" data-parallax="0.05" />
+        <div className="hero-orb b" data-parallax="0.09" />
+        <div className="hero-orb c" data-parallax="0.03" />
+        <div className="hero-inner">
+          <h1>
+            Упакуйте
+            <br />
+            экспертность
+            <br />
+            в&nbsp;продукт
+          </h1>
+          <p className="hero-sub">{product.description}</p>
+          <div className="hero-actions">
+            <Link className="btn btn-white" href="/apply">
+              Оставить заявку <Arrow />
             </Link>
-            <Link className="button ghost" href="/program">
-              Смотреть программу
-              <ChevronRight size={16} />
+            <Link className="btn btn-ghost" href="/program">
+              Смотреть программу <Arrow size={15} />
             </Link>
-          </motion.div>
-          <motion.div
-            className="hero-proof"
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: {},
-              visible: { transition: { staggerChildren: 0.08, delayChildren: 0.78 } },
-            }}
-          >
-            {[product.startDate, product.seats, product.conversion].map((item) => (
-              <motion.span
-                key={item}
-                variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0 } }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              >
-                {item}
-              </motion.span>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="stats-strip" aria-label="Ключевые показатели">
-        {stats.map((stat) => (
-          <div key={stat.label}>
-            <strong>{stat.value}</strong>
-            <span>{stat.label}</span>
           </div>
-        ))}
-      </section>
-
-      <section className="section intro-section">
-        <Reveal className="section-heading">
-          <span className="eyebrow">Что внутри</span>
-          <h2>Не курс про мотивацию. Рабочая сборка продукта, который можно продавать.</h2>
-        </Reveal>
-        <div className="feature-grid">
-          {features.map((feature, index) => {
-            const Icon = feature.icon
-            return (
-              <Reveal className="feature-card" key={feature.title} delay={index * 0.09}>
-                <Icon size={24} />
-                <h3>{feature.title}</h3>
-                <p>{feature.text}</p>
-              </Reveal>
-            )
-          })}
+          <div className="hero-trust">8 недель&nbsp;· 42 шаблона&nbsp;· 1:1 ревью упаковки</div>
         </div>
       </section>
 
-      <section className="dark-band">
-        <div className="dark-band-copy">
-          <span className="eyebrow">Главная идея</span>
-          <h2>Orbit превращает хаос экспертных знаний в управляемую систему запуска.</h2>
-          <p>
-            Каждый участник работает не с абстрактными лекциями, а со своим оффером, тарифами, лендингом, заявкой и продажами. В конце остается не папка с материалами, а готовый контур.
-          </p>
-          <div className="trust-grid">
-            {trustSignals.map((item) => {
-              const Icon = item.icon
-              return (
-                <div key={item.label}>
-                  <Icon size={18} />
-                  <span>{item.label}</span>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-        <div className="mission-panel">
-          {schedule.map((item) => (
-            <div key={item.label} className="schedule-row">
-              <span>{item.label}</span>
-              <strong>{item.value}</strong>
+      {/* Route card */}
+      <section className="sec-white">
+        <div className="wrap">
+          <div className="route-card">
+            <div className="route-card-head">
+              <h2>Четыре шага от идеи до первого потока</h2>
+              <span className="chip-weeks">8 недель</span>
             </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="section gallery-section">
-        <Reveal className="section-heading compact">
-          <span className="eyebrow">Процесс</span>
-          <h2>Фокус на реальную работу: исследование, упаковка, контент, продажи.</h2>
-        </Reveal>
-        <div className="gallery-grid">
-          {galleryImages.map((image, index) => (
-            <Reveal key={image.src} className={`gallery-item gallery-item-${index + 1}`} delay={index * 0.06}>
-              <img src={image.src} alt={image.alt} loading="lazy" />
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      <section className="section pricing-preview">
-        <Reveal className="section-heading">
-          <span className="eyebrow">Тарифы</span>
-          <h2>Три уровня участия: от самостоятельной сборки до сопровождения запуска.</h2>
-        </Reveal>
-        <div className="pricing-grid">
-          {pricingTiers.map((tier, idx) => (
-            <Reveal className={`price-card ${tier.accent}`} key={tier.name} delay={idx * 0.1} y={26}>
-              <div className="price-topline">
-                <span>{tier.bestFor}</span>
-                {tier.accent === 'hot' && <Sparkles size={18} />}
-              </div>
-              <h3>{tier.name}</h3>
-              <strong>{tier.price}</strong>
-              <p>{tier.note}</p>
-              <ul>
-                {tier.features.slice(0, 4).map((feature) => (
-                  <li key={feature}>
-                    <Check size={16} />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <Link className="button small" href={`/apply?tier=${tier.name.toLowerCase()}`}>
-                Выбрать тариф
-              </Link>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      <section className="section cases-preview">
-        <Reveal className="section-heading compact">
-          <span className="eyebrow">Доверие</span>
-          <h2>Кейсы показывают не магию, а понятные изменения в упаковке и воронке.</h2>
-        </Reveal>
-        <div className="case-row">
-          {caseStudies.slice(0, 2).map((study, idx) => (
-            <Reveal key={study.name} delay={idx * 0.12}>
-              <article className="case-card">
-                <img src={study.image} alt={`${study.name}, ${study.role}`} loading="lazy" />
-                <div>
-                  <span>{study.result}</span>
-                  <h3>{study.name}</h3>
-                  <p>{study.quote}</p>
+            <div className="route-grid">
+              <span className="route-line" />
+              {routeSteps.map((step, i) => (
+                <div className="reveal route-step" data-delay={i * 80} key={step.n}>
+                  <span>{step.n}</span>
+                  <h3>{step.title}</h3>
+                  <p>{step.desc}</p>
                 </div>
-              </article>
-            </Reveal>
-          ))}
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="section faq-section">
-        <Reveal className="section-heading compact">
-          <span className="eyebrow">FAQ</span>
-          <h2>Коротко о том, что обычно спрашивают перед заявкой.</h2>
-        </Reveal>
-        <div className="faq-list">
-          {faq.map((item) => (
-            <details key={item.question}>
-              <summary>{item.question}</summary>
-              <p>{item.answer}</p>
-            </details>
-          ))}
+      {/* Method */}
+      <section className="sec sec-white">
+        <div className="wrap">
+          <div className="center-head">
+            <h2 className="reveal section-title">Запуск как производственная система</h2>
+            <p className="reveal section-lead" data-delay={80} style={{ marginTop: 18 }}>
+              Orbit собирает запуск как производственную систему – на каждой неделе появляется
+              артефакт, который можно проверить, показать и использовать в продаже.
+            </p>
+          </div>
+          <div className="stage-grid">
+            {methodStages.map((m, i) => (
+              <div className="reveal lift stage-card" data-delay={i * 80} key={m.key}>
+                <div className="n">{'0' + (i + 1)}</div>
+                <h3>{m.key}</h3>
+                <div className="sub">{m.sub}</div>
+                <p>{m.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="reveal method-banner">
+            <Image
+              src="/gallery-2.png"
+              alt="Еженедельный разбор упаковки и лендинга"
+              fill
+              sizes="(max-width: 1200px) 100vw, 1200px"
+            />
+            <div className="shade" />
+            <span className="tag">Каждую неделю – живой разбор: оффер, лендинг, тарифы</span>
+          </div>
         </div>
       </section>
 
-      <section className="cta-section">
-        <ShieldCheck size={26} color="#22d3ee" />
-        <h2>Заявка занимает 3 минуты. После нее вы увидите, какой формат участия подходит.</h2>
-        <p>Никакой автосписания и настоящей оплаты в демо нет. Это качественный фронтенд-прототип заявочной воронки.</p>
-        <Link className="button ghost" href="/apply" style={{ marginTop: '24px', display: 'inline-flex', width: 'auto' }}>
-          Перейти к заявке
-          <ArrowRight size={16} />
-        </Link>
+      {/* System */}
+      <section className="sec sec-canvas">
+        <div className="wrap">
+          <div className="row2">
+            <div className="reveal media-card">
+              <Image
+                src="/gallery-1.png"
+                alt="Команда собирает запуск в одной системе"
+                width={1448}
+                height={1086}
+                sizes="(max-width: 960px) 100vw, 580px"
+              />
+            </div>
+            <div>
+              <h2 className="reveal section-title">Продукт, страница и заявки – в одной системе</h2>
+              <div className="point-list">
+                {systemPoints.map((p, i) => (
+                  <div className="reveal point" data-delay={i * 80} key={p.title}>
+                    <span className="ico">✦</span>
+                    <div>
+                      <h3>{p.title}</h3>
+                      <p>{p.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
-    </>
+
+      {/* Cases preview */}
+      <section className="sec sec-white">
+        <div className="wrap">
+          <div className="head-row">
+            <h2 className="reveal section-title">Первые запуски выпускников</h2>
+            <Link className="btn-link" href="/cases">
+              Все кейсы <Arrow />
+            </Link>
+          </div>
+          <div className="cases-grid">
+            {cases.map((c, i) => (
+              <Link className="reveal case-card" data-delay={i * 80} href="/cases" key={c.id}>
+                <div className="photo">
+                  <Image
+                    src={c.img}
+                    alt={c.name}
+                    fill
+                    sizes="(max-width: 960px) 100vw, 380px"
+                  />
+                </div>
+                <div className="body">
+                  <div className="name">{c.name}</div>
+                  <div className="role">{c.role}</div>
+                  <p className="short">«{c.short}»</p>
+                  <div className="tag-row">
+                    <span className="tag solid">{c.tag1}</span>
+                    <span className="tag soft">{c.tag2}</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing preview */}
+      <section className="sec sec-canvas">
+        <div className="wrap">
+          <div className="center-head">
+            <h2 className="reveal section-title">Три формата запуска</h2>
+            <p className="reveal section-lead" data-delay={80} style={{ marginTop: 16 }}>
+              Выберите глубину поддержки – от самостоятельной сборки до личного launch-room.
+            </p>
+          </div>
+          <div className="pricing-grid">
+            {tariffs.map((t, i) => (
+              <PriceCard tier={t} delay={i * 80} key={t.id} />
+            ))}
+          </div>
+          <div style={{ textAlign: 'center', marginTop: 28 }}>
+            <Link className="btn-link" href="/pricing">
+              Сравнить форматы подробнее <Arrow />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="sec sec-white">
+        <div className="wrap-narrow">
+          <div className="center-head">
+            <h2 className="reveal section-title">Коротко о главном</h2>
+          </div>
+          <Faq />
+        </div>
+      </section>
+    </div>
   )
 }

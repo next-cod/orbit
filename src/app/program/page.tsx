@@ -1,72 +1,92 @@
-﻿import { ArrowRight, CheckCircle2 } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
-import { PageHeader } from '@/components/ui/PageHeader'
-import { Reveal } from '@/components/ui/Reveal'
-import { curriculum, operations } from '@/data/content'
+import { Arrow } from '@/components/ui/icons'
+import { modules, ritm } from '@/data/content'
 
 export const metadata = {
-  title: 'Программа — Orbit Method',
-  description: '8 недель, где каждый модуль двигает ваш продукт к продаже.',
+  title: 'Программа – Orbit Method',
+  description: 'Восемь недель – восемь артефактов: от угла и оффера до лендинга, продаж и запуска.',
 }
 
 export default function ProgramPage() {
   return (
-    <>
-      <PageHeader
-        eyebrow="Программа"
-        title="8 недель, где каждый модуль двигает ваш продукт к продаже."
-        text="Программа построена как производственный цикл: исследование, оффер, методика, контент, лендинг, продажи, запуск и масштабирование."
-      />
-
-      <section className="section program-layout">
-        <div className="timeline">
-          {curriculum.map((module, index) => {
-            const Icon = module.icon
-            return (
-              <Reveal className="module-card" key={module.week} delay={Math.min(index * 0.03, 0.18)}>
-                <div className="module-week">{module.week}</div>
-                <div className="module-body">
-                  <Icon size={20} color="var(--color-cofounder-blue)" />
-                  <h2>{module.title}</h2>
-                  <p>{module.outcome}</p>
-                  <ul>
-                    {module.lessons.map((lesson) => (
-                      <li key={lesson}>
-                        <CheckCircle2 size={14} />
-                        {lesson}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Reveal>
-            )
-          })}
-        </div>
-
-        <aside className="sticky-panel">
-          <span className="eyebrow">Ритм участия</span>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '22px', letterSpacing: '-0.01em', color: '#fff', marginTop: '12px' }}>
-            Без перегруза, но с жесткой структурой результата.
-          </h2>
-          <p>Каждую неделю вы закрываете один конкретный артефакт: карту сегмента, оффер, модуль, лендинг, скрипт, календарь запуска.</p>
-          <div className="operation-list">
-            {operations.map((item) => {
-              const Icon = item.icon
-              return (
-                <div key={item.title}>
-                  <Icon size={16} />
-                  <span>{item.title}</span>
-                  <strong style={{ color: 'var(--color-action-azure)', fontSize: '13px' }}>{item.value}</strong>
-                </div>
-              )
-            })}
+    <div className="page-in">
+      <section className="page-head">
+        <div className="wrap">
+          <div className="row2">
+            <div>
+              <h1>Восемь недель – восемь артефактов</h1>
+              <p>
+                Каждую неделю вы собираете конкретный результат: от угла и оффера до лендинга, продаж
+                и запуска потока. Ничего лишнего – только то, что нужно для первого понятного запуска.
+              </p>
+              <div className="chips">
+                <span className="tag solid">8 модулей</span>
+                <span className="tag soft">5–7 часов в неделю</span>
+                <span className="tag soft">1:1 ревью упаковки</span>
+              </div>
+            </div>
+            <div className="reveal media-card">
+              <Image
+                src="/gallery-3.png"
+                alt="Работа над запуском"
+                width={1672}
+                height={941}
+                sizes="(max-width: 960px) 100vw, 580px"
+                priority
+              />
+            </div>
           </div>
-          <Link className="button outlined full" href="/apply">
-            Подать заявку
-            <ArrowRight size={16} />
-          </Link>
-        </aside>
+        </div>
       </section>
-    </>
+
+      <section className="sec sec-canvas" style={{ paddingTop: 'clamp(56px,7vw,92px)' }}>
+        <div className="wrap">
+          <div className="mod-layout">
+            <div className="mod-list">
+              {modules.map((m, i) => (
+                <div className="reveal mod-card" data-delay={Math.min(i, 4) * 80} key={m.num}>
+                  <div className="top">
+                    <span className="mod-num">{m.num}</span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div className="mod-name">{m.name}</div>
+                      <div className="mod-result">
+                        <span className="k">Результат</span>
+                        <span className="v">{m.result}</span>
+                      </div>
+                      <div className="mod-points">
+                        {m.points.map((pt) => (
+                          <span className="mod-point" key={pt}>
+                            <Image src="/check-purple.png" alt="" width={12} height={12} />
+                            {pt}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <aside className="side-card">
+              <h2>Ритм без перегруза</h2>
+              <div className="side-list">
+                {ritm.map((r) => (
+                  <div className="item" key={r.label}>
+                    <div className="k">{r.label}</div>
+                    <div className="v">{r.value}</div>
+                    <div className="n">{r.note}</div>
+                  </div>
+                ))}
+              </div>
+              <Link className="btn btn-primary side-cta" href="/apply">
+                Подать заявку <Arrow />
+              </Link>
+              <p className="side-note">Старт после набора группы. Бриф – 12 минут.</p>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </div>
   )
 }
