@@ -1,17 +1,10 @@
 'use client'
 import Link from 'next/link'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { disclaimer, navItems, product } from '@/data/content'
 
 export function Footer() {
   const [open, setOpen] = useState(false)
-  const [height, setHeight] = useState(0)
-  const bodyRef = useRef<HTMLDivElement | null>(null)
-
-  const toggle = () => {
-    if (!open && bodyRef.current) setHeight(bodyRef.current.scrollHeight)
-    setOpen((v) => !v)
-  }
 
   return (
     <footer className="footer">
@@ -45,19 +38,22 @@ export function Footer() {
             <Link href="/privacy">Политика конфиденциальности</Link>
             <Link href="/offer">Оферта</Link>
             <Link href="/license">Лицензия</Link>
-            <button type="button" className="footer-disclaimer-toggle" onClick={toggle} aria-expanded={open}>
+            <button
+              type="button"
+              className="footer-disclaimer-toggle"
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+            >
               Дисклеймер
             </button>
             <span className="copy">© {new Date().getFullYear()} {product.name}</span>
           </div>
         </div>
 
-        <div className="footer-disclaimer-body" style={{ maxHeight: open ? height : 0 }}>
-          <div ref={bodyRef}>
-            <p>
-              <strong>{disclaimer.lead}</strong> {disclaimer.text}
-            </p>
-          </div>
+        <div className={`footer-disclaimer-body${open ? ' open' : ''}`}>
+          <p>
+            <strong>{disclaimer.lead}</strong> {disclaimer.text}
+          </p>
         </div>
       </div>
     </footer>
