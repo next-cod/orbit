@@ -427,8 +427,7 @@ p {
   display: none;
   width: 42px;
   height: 42px;
-  border-radius: 12px;
-  border: 1px solid currentColor;
+  border: none;
   background: transparent;
   color: inherit;
   align-items: center;
@@ -436,37 +435,43 @@ p {
 }
 .burger-lines {
   position: relative;
-  width: 18px;
-  height: 13px;
+  width: 22px;
+  height: 14px;
   flex: none;
 }
 .burger-lines span {
   position: absolute;
   left: 0;
-  width: 100%;
   height: 2px;
   border-radius: 2px;
   background: currentColor;
-  transition: transform 0.32s var(--ease), opacity 0.24s var(--ease), top 0.32s var(--ease);
+  transition: transform 0.32s var(--ease), opacity 0.24s var(--ease), top 0.32s var(--ease),
+    width 0.32s var(--ease);
 }
 .burger-lines span:nth-child(1) {
   top: 0;
+  width: 22px;
 }
 .burger-lines span:nth-child(2) {
-  top: 5.5px;
+  top: 6px;
+  width: 15px;
 }
 .burger-lines span:nth-child(3) {
-  top: 11px;
+  top: 12px;
+  width: 22px;
 }
 .nav-burger.open .burger-lines span:nth-child(1) {
-  top: 5.5px;
+  top: 6px;
+  width: 22px;
   transform: rotate(45deg);
 }
 .nav-burger.open .burger-lines span:nth-child(2) {
+  width: 22px;
   opacity: 0;
 }
 .nav-burger.open .burger-lines span:nth-child(3) {
-  top: 5.5px;
+  top: 6px;
+  width: 22px;
   transform: rotate(-45deg);
 }
 /* Fullscreen mobile menu – a distinct branded overlay rather than a small
