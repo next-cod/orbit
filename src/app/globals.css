@@ -764,6 +764,7 @@ p {
   position: absolute;
   left: 24px;
   bottom: 24px;
+  max-width: calc(100% - 48px);
   background: var(--violet);
   color: #fff;
   font: 700 13px/1.3 var(--font);
