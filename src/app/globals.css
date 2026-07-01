@@ -1921,6 +1921,32 @@ textarea.inp {
   font: 400 13.5px/1 var(--font);
   letter-spacing: 0.02em;
 }
+.footer-disclaimer-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  color: rgba(255, 255, 255, 0.5);
+  font: 500 13.5px/1 var(--font);
+  letter-spacing: 0.01em;
+  transition: color 0.28s var(--ease);
+}
+.footer-disclaimer-toggle:hover {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.footer-disclaimer-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s var(--ease);
+}
+.footer-disclaimer-body p {
+  margin: 14px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.36);
+  font: 400 12.5px/1.6 var(--font);
+  letter-spacing: 0.01em;
+}
 
 /* ----------------------------------------------------------------
    Responsive

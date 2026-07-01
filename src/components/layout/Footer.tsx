@@ -1,7 +1,18 @@
+'use client'
 import Link from 'next/link'
-import { navItems, product } from '@/data/content'
+import { useRef, useState } from 'react'
+import { disclaimer, navItems, product } from '@/data/content'
 
 export function Footer() {
+  const [open, setOpen] = useState(false)
+  const [height, setHeight] = useState(0)
+  const bodyRef = useRef<HTMLDivElement | null>(null)
+
+  const toggle = () => {
+    if (!open && bodyRef.current) setHeight(bodyRef.current.scrollHeight)
+    setOpen((v) => !v)
+  }
+
   return (
     <footer className="footer">
       <div className="wrap">
@@ -34,7 +45,16 @@ export function Footer() {
             <Link href="/privacy">Политика конфиденциальности</Link>
             <Link href="/offer">Оферта</Link>
             <Link href="/license">Лицензия</Link>
+            <button type="button" className="footer-disclaimer-toggle" onClick={toggle} aria-expanded={open}>
+              {disclaimer.lead}
+            </button>
             <span className="copy">© {new Date().getFullYear()} {product.name}</span>
+          </div>
+        </div>
+
+        <div className="footer-disclaimer-body" style={{ maxHeight: open ? height : 0 }}>
+          <div ref={bodyRef}>
+            <p>{disclaimer.text}</p>
           </div>
         </div>
       </div>
